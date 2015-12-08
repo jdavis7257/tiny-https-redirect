@@ -28,3 +28,4 @@ deployment:
       - cd ../
       - docker build --tag=jdavis7257/tiny-redirect:0.1 .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push jdavis7257/tiny-redirect:0.1
