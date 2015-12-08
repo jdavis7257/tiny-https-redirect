@@ -1,5 +1,5 @@
 FROM busybox
 
-ADD src/redirect /redirect
+ADD dist/linux_amd64 /redirect
 RUN chmod +x redirect
 ENTRYPOINT redirect
