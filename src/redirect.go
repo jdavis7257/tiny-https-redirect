@@ -45,10 +45,10 @@ func handle(w http.ResponseWriter, r * http.Request) {
 
 
 	if !redirectHTTP {
-		fmt.Printf("Redirecting to https://" + host+path + " ignoring port " + port)
+		fmt.Println("Redirecting to https://" + host+path + " ignoring port " + port)
 		http.Redirect(w,r,"https://" + host + path,301)
 	} else {
-		fmt.Printf("Redirecting to http://" + host+path + " ignoring port " + port)
+		fmt.Println("Redirecting to http://" + host+path + " ignoring port " + port)
 		http.Redirect(w,r,"http://" + host + path,301)
 	}
 
