@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"fmt"
 	"os"
+	"net"
 )
 
 var redirectHost string
@@ -31,7 +32,7 @@ func handle(w http.ResponseWriter, r * http.Request) {
 
 	//If the redirect host is empty use the host from the request
 	if redirectHost == "" {
-		host = r.Host
+		host = net.SplitHostPort(r.Host)
 	} else {
 		host = redirectHost
 	}
