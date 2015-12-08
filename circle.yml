@@ -10,16 +10,17 @@ dependencies:
 
 
 
-test:
-  pre:
-    - go vet src
-
-  override:
-    - godep go test src
+#test:
+#  pre:
+#    - go vet src/redirect.go
+#
+#  override:
+#    - godep go test src/redirect/go
 
 deployment:
   hub:
     branch: master
     commands:
+      - go build src/redirect.go
       - docker build --tag=jdavis7257/tiny-redirect:0.1
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
