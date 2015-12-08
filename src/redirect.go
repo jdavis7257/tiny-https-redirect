@@ -28,11 +28,14 @@ func main() {
 
 func handle(w http.ResponseWriter, r * http.Request) {
 
-	var host string
-
+	var host, port string
+	var err error
 	//If the redirect host is empty use the host from the request
 	if redirectHost == "" {
-		host = net.SplitHostPort(r.Host)
+		host, port, err = net.SplitHostPort(r.Host)
+		if err != nil {
+			host = redirectHost
+		}
 	} else {
 		host = redirectHost
 	}
@@ -40,10 +43,12 @@ func handle(w http.ResponseWriter, r * http.Request) {
 	fmt.Println("Processing request from " + r.RemoteAddr)
 	path := r.RequestURI
 
-	fmt.Printf("Redirecting to " + host+path)
+
 	if !redirectHTTP {
+		fmt.Printf("Redirecting to https://" + host+path + " ignoring port " + port)
 		http.Redirect(w,r,"https://" + host + path,301)
 	} else {
+		fmt.Printf("Redirecting to http://" + host+path + " ignoring port " + port)
 		http.Redirect(w,r,"http://" + host + path,301)
 	}
 
