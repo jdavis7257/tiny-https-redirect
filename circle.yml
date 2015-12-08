@@ -8,16 +8,14 @@ dependencies:
   pre:
     - go get github.com/tools/godep
 
-  override:
-    - mkdir -p "$GOPATH/src/$IMPORT_PATH"
-    - rsync -azC --delete ./ "$GOPATH/src/$IMPORT_PATH/"
+
 
 test:
   pre:
-    - go vet ./...
+    - go vet src
 
   override:
-    - godep go test ./...
+    - godep go test src
 
 deployment:
   hub:
