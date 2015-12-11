@@ -21,7 +21,7 @@ func main() {
 		fmt.Println("Using https for redirects.")
 		redirectHTTP = true;
 	}
-	fmt.Println("Listening on port 80...\n" + " Redirect hostname is " + os.Getenv("REDIRECT_HOSTNAME"))
+	fmt.Println("Listening on port 80...\n" + "Redirect hostname is " + os.Getenv("REDIRECT_HOSTNAME"))
 	http.ListenAndServe(":80", nil)
 
 }
