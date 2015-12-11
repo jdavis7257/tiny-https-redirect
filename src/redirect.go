@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"fmt"
 	"os"
-	"net"
 )
 
 var redirectHost string
@@ -21,7 +20,13 @@ func main() {
 		fmt.Println("Using https for redirects.")
 		redirectHTTP = true;
 	}
-	fmt.Println("Listening on port 80...\n" + "Redirect hostname is " + os.Getenv("REDIRECT_HOSTNAME"))
+
+	if redirectHost == "" {
+		fmt.Println("Listening on port 80...\n" + "Redirect hostname was not provided. Will use host from requests to redirect")
+	} else {
+		fmt.Println("Listening on port 80...\n" + "Redirect hostname is " + os.Getenv("REDIRECT_HOSTNAME") + ". Will use " + redirectHost + " for redirects.")
+	}
+
 	http.ListenAndServe(":80", nil)
 
 }
@@ -29,13 +34,9 @@ func main() {
 func handle(w http.ResponseWriter, r *http.Request) {
 
 	var host, port string
-	var err error
 	//If the redirect host is empty use the host from the request
 	if redirectHost == "" {
-		host, port, err = net.SplitHostPort(r.Host)
-		if err != nil {
-			host = redirectHost
-		}
+		host = r.Host
 	} else {
 		host = redirectHost
 	}
