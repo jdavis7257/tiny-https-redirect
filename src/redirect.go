@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"fmt"
 	"os"
+	"strings"
 )
 
 var redirectHost string
@@ -44,13 +45,20 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Processing request from " + r.RemoteAddr)
 	path := r.RequestURI
 
-
-	if !redirectHTTP {
-		fmt.Println("Redirecting to https://" + host + path + " ignoring port " + port)
-		http.Redirect(w, r, "https://" + host + path, 301)
+	//If some passes http as a path then slap them on the hand with a bad request.
+	if(strings.HasPrefix(path,"/http:") || strings.HasPrefix(path,"/HTTP:")) {
+		fmt.Println("Someone is trying to do something nasty. Returning 400.")
+		http.Error(w,"Bad Request",http.StatusBadRequest)
 	} else {
-		fmt.Println("Redirecting to http://" + host + path + " ignoring port " + port)
-		http.Redirect(w, r, "http://" + host + path, 301)
+		if !redirectHTTP {
+			fmt.Println("Redirecting to https://" + host + path + " ignoring port " + port)
+			http.Redirect(w, r, "https://" + host + path, 301)
+		} else {
+			fmt.Println("Redirecting to http://" + host + path + " ignoring port " + port)
+			http.Redirect(w, r, "http://" + host + path, 301)
+		}
 	}
+
+
 
 }
