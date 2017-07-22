@@ -46,7 +46,7 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	path := r.RequestURI
 
 	//If some passes http as a path then slap them on the hand with a bad request.
-	if(strings.HasPrefix(path,"/http:") || strings.HasPrefix(path,"/HTTP:")) {
+	if(strings.HasPrefix(path,"/http:") || strings.HasPrefix(path,"/HTTP:")|| strings.Contains(path,"comhttp")) {
 		fmt.Println("Someone is trying to do something nasty. Returning 400.")
 		http.Error(w,"Bad Request",http.StatusBadRequest)
 	} else {
