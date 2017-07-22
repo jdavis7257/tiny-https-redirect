@@ -21,8 +21,7 @@ deployment:
   hub:
     branch: master
     commands:
-      - go build ./src/redirect.go
-#      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` dist/
+      - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build src/redirect.go
       - docker build --tag=jdavis7257/tiny-redirect:0.2 .
       - docker build --tag=jdavis7257/tiny-redirect:latest .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS

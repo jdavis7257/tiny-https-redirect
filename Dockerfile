@@ -1,5 +1,5 @@
-FROM busybox
+FROM alpine
 
 ADD redirect /redirect
 RUN chmod +x redirect
-ENTRYPOINT ./redirect
+ENTRYPOINT /redirect
