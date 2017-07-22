@@ -4,6 +4,6 @@ Tiny https redirect application written in go for the sole purpose of redirectin
 # Configuration
 | Environment Variable | Description               |
 | ---------------------| ------------------------- |
-| REDIRECT_HOST        | Specifies a host that will replace the host in the request when the redirect url is built. |
+| REDIRECT_HOSTNAME    | Specifies a host that will replace the host in the request when the redirect url is built. |
 | USE_HTTP             | Causes the redirect to use HTTP instead of HTTPS. Specifying anything Anything will activate this. (eg,. USE_HTTP=true) |
 
