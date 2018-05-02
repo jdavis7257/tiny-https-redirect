@@ -77,7 +77,6 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	// If the host check is enabled, go ahead and perform that function
 	if hostCheckEnabled {
 		if strings.HasSuffix(host, whiteListedSuffix) {
-			host = r.Host
 			redirect(w, r, host+r.RequestURI)
 		} else {
 			redirect(w, r, redirectURL)
@@ -94,18 +93,18 @@ func handle(w http.ResponseWriter, r *http.Request) {
 }
 
 func redirect(w http.ResponseWriter, r *http.Request, hostPath string) {
-	fmt.Println("Processing request from " + r.RemoteAddr)
+	fmt.Println("Processing request from " + r.Host)
 	path := r.RequestURI
 	//If some passes http as a path then slap them on the hand with a bad request.
 	if strings.HasPrefix(path, "/http:") || strings.HasPrefix(path, "/HTTP:") || strings.Contains(path, "comhttp") {
-		fmt.Println("Someone is trying to do something nasty. Returning 400.")
+		log.Println("Someone is trying to do something nasty. Returning 400.")
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 	} else {
 		if !redirectHTTP {
-			fmt.Println("Redirecting to https://" + hostPath)
+			log.Println("Redirecting to https://" + hostPath)
 			http.Redirect(w, r, "https://"+hostPath, redirectCode)
 		} else {
-			fmt.Println("Redirecting to http://" + hostPath)
+			log.Println("Redirecting to http://" + hostPath)
 			http.Redirect(w, r, "http://"+hostPath, redirectCode)
 		}
 	}
