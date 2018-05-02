@@ -10,7 +10,7 @@ dependencies:
 
 test:
   override:
-    - go test -cover
+    - godep go test -cover
 
 deployment:
   hub:
