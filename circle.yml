@@ -8,9 +8,9 @@ dependencies:
   pre:
     - go get github.com/tools/godep
 
-test:
-  override:
-    - GOPATH=/home/ubuntu/Tiny-Redirect/src go test -cover
+#test:
+#  override:
+#    - GOPATH=/home/ubuntu/Tiny-Redirect/src go test -cover
 
 deployment:
   hub:
