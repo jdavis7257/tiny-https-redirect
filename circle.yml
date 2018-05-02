@@ -17,8 +17,8 @@ deployment:
     branch: master
     commands:
       - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build src/redirect.go
-      - docker build --tag=jdavis7257/tiny-redirect:0.3 .
+      - docker build --tag=jdavis7257/tiny-redirect:1.0 .
       - docker build --tag=jdavis7257/tiny-redirect:latest .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push jdavis7257/tiny-redirect:0.3
+      - docker push jdavis7257/tiny-redirect:1.0
       - docker push jdavis7257/tiny-redirect:latest
