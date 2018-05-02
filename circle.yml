@@ -10,7 +10,7 @@ dependencies:
 
 test:
   override:
-    - GOPATH=/home/ubuntu/Tiny-Redirect/src godep go test -cover
+    - GOPATH=/home/ubuntu/Tiny-Redirect/src go test -cover
 
 deployment:
   hub:
