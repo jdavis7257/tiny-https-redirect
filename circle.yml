@@ -3,6 +3,7 @@ machine:
     - docker
   environment:
     IMPORT_PATH: "github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+    GOPATH: "$CIRCLE_WORKING_DIRECTORY/src"
 
 dependencies:
   pre:
