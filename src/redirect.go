@@ -36,6 +36,7 @@ func main() {
 		log.Fatal("If you specify WHITELISTED_SUFFIX you must specify REDIRECT_URL!! Please Try Again!!")
 	}
 
+	//Clean up the redirect URL provided since we don't want the protocol
 	if strings.HasPrefix(redirectURL, "https://") {
 		redirectURL = strings.Replace(redirectURL, "https://", "", -1)
 	} else if strings.HasPrefix(redirectURL, "http://") {
@@ -76,10 +77,13 @@ func handle(w http.ResponseWriter, r *http.Request) {
 
 	// If the host check is enabled, go ahead and perform that function
 	if hostCheckEnabled {
+		//Whitelisting magic happens here. If they don't match use the redirect URL provided
+		//Otherwise just send them on to where they were headed.
 		if strings.HasSuffix(host, whiteListedSuffix) {
-			redirect(w, r, host+r.RequestURI)
+			//Since we don't want them to always get sent to this "fixed page" it's always a 302
+			redirect(w, r, host+r.RequestURI, 302)
 		} else {
-			redirect(w, r, redirectURL)
+			redirect(w, r, redirectURL, redirectCode)
 		}
 	} else {
 		//If the redirect host is empty use the host from the request
@@ -88,11 +92,11 @@ func handle(w http.ResponseWriter, r *http.Request) {
 		} else {
 			host = redirectHost
 		}
-		redirect(w, r, host+r.RequestURI)
+		redirect(w, r, host+r.RequestURI, redirectCode)
 	}
 }
 
-func redirect(w http.ResponseWriter, r *http.Request, hostPath string) {
+func redirect(w http.ResponseWriter, r *http.Request, hostPath string, code int) {
 	fmt.Println("Processing request from " + r.Host)
 	path := r.RequestURI
 	//If some passes http as a path then slap them on the hand with a bad request.
@@ -100,12 +104,13 @@ func redirect(w http.ResponseWriter, r *http.Request, hostPath string) {
 		log.Println("Someone is trying to do something nasty. Returning 400.")
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 	} else {
+		//If set to use http do that.
 		if !redirectHTTP {
 			log.Println("Redirecting to https://" + hostPath)
-			http.Redirect(w, r, "https://"+hostPath, redirectCode)
+			http.Redirect(w, r, "https://"+hostPath, code)
 		} else {
 			log.Println("Redirecting to http://" + hostPath)
-			http.Redirect(w, r, "http://"+hostPath, redirectCode)
+			http.Redirect(w, r, "http://"+hostPath, code)
 		}
 	}
 
